@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">IoT control</string>
-    <string name="start_screen_text">Start screen text</string>
+    <string name="start_screen_title">Интеллектуальная система управления помещениями</string>
+    <string name="start_screen_text">1. Разработано в качестве дипломной работы\n2. Построено на Jetpack Compose\n3. Целевое помещение: аудитория 361 корпуса Университета ИТМО на Кронверкском проспекте д.49</string>
 </resources>
