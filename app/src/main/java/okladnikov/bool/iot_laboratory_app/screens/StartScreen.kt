@@ -1,6 +1,8 @@
 package okladnikov.bool.iot_laboratory_app.screens
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -11,12 +13,16 @@ import androidx.compose.ui.unit.dp
 import okladnikov.bool.iot_laboratory_app.R
 import okladnikov.bool.iot_laboratory_app.ui.elements.DefaultBottomAppBar
 import okladnikov.bool.iot_laboratory_app.ui.elements.CardWithTitle
+import okladnikov.bool.iot_laboratory_app.ui.elements.DefaultTopAppBar
 import okladnikov.bool.iot_laboratory_app.ui.elements.TitleText
 
 @Preview
 @Composable
 fun StartScreen() {
     Scaffold(
+        topBar = {
+            DefaultTopAppBar("Инофрмация")
+        },
         bottomBar = {
             DefaultBottomAppBar()
         }
@@ -27,6 +33,7 @@ fun StartScreen() {
             modifier = Modifier
                 .fillMaxSize()
                 .absolutePadding(10.dp, 10.dp, 10.dp, 10.dp)
+                .verticalScroll(rememberScrollState())
         ) {
             TitleText(stringResource(R.string.start_screen_title))
 

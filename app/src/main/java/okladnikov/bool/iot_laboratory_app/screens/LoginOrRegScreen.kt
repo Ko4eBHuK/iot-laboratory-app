@@ -6,27 +6,21 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.semantics.SemanticsProperties.ContentDescription
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.material.Icon
-
 import okladnikov.bool.iot_laboratory_app.ui.elements.*
 
 @Preview
 @Composable
-fun HouseManageScreen() {
+fun LoginOrRegScreen() {
     Scaffold(
         topBar = {
-            DefaultTopAppBar("Доступные помещения")
+            DefaultTopAppBar("Вход")
         },
         bottomBar = {
             DefaultBottomAppBar()
@@ -44,12 +38,21 @@ fun HouseManageScreen() {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Box( modifier = Modifier.fillMaxWidth() ) {
-                CardWithTitle(title = "Привязать") {
-                    Icon(
-                        imageVector = Icons.Filled.Add,
-                        contentDescription = "Add house to manage"
-                    )
-                }
+                DefaultButton(
+                    onClick = {
+                        /*TODO*/
+                    },
+                    text = "Войти"
+                )
+            }
+
+            Box( modifier = Modifier.fillMaxWidth() ) {
+                DefaultButton(
+                    onClick = {
+                        /*TODO*/
+                    },
+                    text = "Зарегестрироваться"
+                )
             }
         }
     }

@@ -3,6 +3,7 @@
     package="okladnikov.bool.iot_laboratory_app">
 
     <application
+        android:name=".IoTControlApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"

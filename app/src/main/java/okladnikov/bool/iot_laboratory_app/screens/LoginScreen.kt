@@ -17,10 +17,10 @@ import okladnikov.bool.iot_laboratory_app.ui.elements.*
 
 @Preview
 @Composable
-fun RegisterScreen() {
+fun LoginScreen() {
     Scaffold(
         topBar = {
-            DefaultTopAppBar("Регистрация")
+            DefaultTopAppBar("Вход")
         },
         bottomBar = {
             DefaultBottomAppBar()
@@ -38,21 +38,11 @@ fun RegisterScreen() {
                 .padding(20.dp)
                 .pointerInput(Unit) { detectTapGestures(
                     onTap = { localFocusManager.clearFocus() }
-                )},
+                    )},
         ) {
 
             DefaultTextField(
-                label = "Логин",
-                modifier = Modifier.padding(30.dp)
-            )
-
-            DefaultTextField(
-                label = "Имя",
-                modifier = Modifier.padding(30.dp)
-            )
-
-            DefaultTextField(
-                label = "E-mail",
+                label = "Логин или E-mail",
                 modifier = Modifier.padding(30.dp)
             )
 
@@ -62,17 +52,11 @@ fun RegisterScreen() {
                 visualTransformation = PasswordVisualTransformation()
             )
 
-            DefaultTextField(
-                label = "Повторите пароль",
-                modifier = Modifier.padding(30.dp),
-                visualTransformation = PasswordVisualTransformation()
-            )
-
             DefaultButton(
                 onClick = {
                     localFocusManager.clearFocus()
-                },
-                text = "Зарегестрироваться"
+                          },
+                text = "Войти"
             )
         }
     }

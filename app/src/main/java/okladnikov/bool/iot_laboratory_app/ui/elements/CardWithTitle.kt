@@ -15,7 +15,7 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun CardWithTitle(
     title: String,
-    content: @Composable() () -> Unit
+    content: @Composable () -> Unit
 ) {
     Column(
         modifier = Modifier
