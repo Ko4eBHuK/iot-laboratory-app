@@ -1,11 +1,7 @@
 package okladnikov.bool.iot_laboratory_app.ui.elements
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.CutCornerShape
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -17,40 +13,44 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun InfoCard(
+fun CardWithTitle(
     title: String,
-    text: String
+    content: @Composable() () -> Unit
 ) {
     Column(
         modifier = Modifier
             .padding(30.dp)
             .background(
-                color = MaterialTheme.colors.primary,
+                color = MaterialTheme.colors.surface,
                 shape = MaterialTheme.shapes.small
-            ),
+            )
+            .width(IntrinsicSize.Max),
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(
-            text = title,
-            modifier = Modifier.padding(15.dp),
-            color = MaterialTheme.colors.onPrimary,
-            fontSize = 16.sp,
-            fontWeight = FontWeight.ExtraBold
-        )
-
         Box(
             modifier = Modifier
                 .background(
-                    color = MaterialTheme.colors.surface,
-                    shape = RoundedCornerShape(bottomStart = 10.dp, bottomEnd = 10.dp)
+                    color = MaterialTheme.colors.primary,
+                    shape = RoundedCornerShape(topStart = 10.dp, topEnd = 10.dp)
                 )
-                .padding(15.dp)
+                .fillMaxWidth(),
+            contentAlignment = Alignment.Center
         ) {
             Text(
-                text = text,
-                color = MaterialTheme.colors.onPrimary
+                text = title,
+                modifier = Modifier.padding(15.dp),
+                color = MaterialTheme.colors.onPrimary,
+                fontSize = 16.sp,
+                fontWeight = FontWeight.ExtraBold
             )
+        }
+
+        Box(
+            modifier = Modifier.padding(15.dp)
+                .fillMaxWidth()
+        ) {
+            content()
         }
     }
 }

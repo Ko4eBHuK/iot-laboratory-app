@@ -11,7 +11,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun Title(text: String) {
+fun TitleText(text: String) {
     Text(
         text = text,
         modifier = Modifier.padding(30.dp),
