@@ -13,17 +13,17 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import okladnikov.bool.iot_laboratory_app.ui.elements.*
 
-@Preview
 @Composable
-fun LoginOrRegScreen() {
+fun LoginOrRegScreen(navController: NavController) {
     Scaffold(
         topBar = {
             DefaultTopAppBar("Вход")
         },
         bottomBar = {
-            DefaultBottomAppBar()
+            DefaultBottomAppBar(navController)
         }
     ) {
         Column(
@@ -40,7 +40,7 @@ fun LoginOrRegScreen() {
             Box( modifier = Modifier.fillMaxWidth() ) {
                 DefaultButton(
                     onClick = {
-                        /*TODO*/
+                        navController.navigate("login")
                     },
                     text = "Войти"
                 )
@@ -49,7 +49,7 @@ fun LoginOrRegScreen() {
             Box( modifier = Modifier.fillMaxWidth() ) {
                 DefaultButton(
                     onClick = {
-                        /*TODO*/
+                        navController.navigate("register")
                     },
                     text = "Зарегестрироваться"
                 )

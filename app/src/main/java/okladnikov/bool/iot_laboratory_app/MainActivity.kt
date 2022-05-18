@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Scaffold
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -14,6 +15,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
 import okladnikov.bool.iot_laboratory_app.screens.*
+import okladnikov.bool.iot_laboratory_app.ui.elements.DefaultBottomAppBar
+import okladnikov.bool.iot_laboratory_app.ui.elements.DefaultTopAppBar
 import okladnikov.bool.iot_laboratory_app.ui.theme.IotlaboratoryappTheme
 
 @AndroidEntryPoint
@@ -40,16 +43,15 @@ fun IotControlApp() {
                 navController = navController,
                 startDestination = "start"
             ) {
-                composable("start") { StartScreen() }
-                composable("logReg") { LoginOrRegScreen() }
-                composable("login") { LoginScreen() }
-                composable("register") { RegisterScreen() }
-                composable("accountManage") { AccountManageScreen() }
-                composable("houseManage") { HouseManageScreen() }
-                composable("houseControl") { HouseControlScreen() }
-                composable("houseAdd") { HouseAddScreen() }
+                composable("start") { StartScreen(navController) }
+                composable("logReg") { LoginOrRegScreen(navController) }
+                composable("login") { LoginScreen(navController) }
+                composable("register") { RegisterScreen(navController) }
+                composable("accountManage") { AccountManageScreen(navController) }
+                composable("houseManage") { HouseManageScreen(navController) }
+                composable("houseControl") { HouseControlScreen(navController) }
+                composable("houseAdd") { HouseAddScreen(navController) }
             }
-
         }
     }
 }

@@ -13,17 +13,17 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import okladnikov.bool.iot_laboratory_app.ui.elements.*
 
-@Preview
 @Composable
-fun LoginScreen() {
+fun LoginScreen(navController: NavController) {
     Scaffold(
         topBar = {
             DefaultTopAppBar("Вход")
         },
         bottomBar = {
-            DefaultBottomAppBar()
+            DefaultBottomAppBar(navController)
         }
     ) {
         val localFocusManager = LocalFocusManager.current
@@ -55,6 +55,7 @@ fun LoginScreen() {
             DefaultButton(
                 onClick = {
                     localFocusManager.clearFocus()
+                    navController.navigate("accountManage")
                           },
                 text = "Войти"
             )

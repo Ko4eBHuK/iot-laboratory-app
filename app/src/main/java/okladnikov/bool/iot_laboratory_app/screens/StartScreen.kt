@@ -10,21 +10,21 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import okladnikov.bool.iot_laboratory_app.R
 import okladnikov.bool.iot_laboratory_app.ui.elements.DefaultBottomAppBar
 import okladnikov.bool.iot_laboratory_app.ui.elements.CardWithTitle
 import okladnikov.bool.iot_laboratory_app.ui.elements.DefaultTopAppBar
 import okladnikov.bool.iot_laboratory_app.ui.elements.TitleText
 
-@Preview
 @Composable
-fun StartScreen() {
+fun StartScreen(navController: NavController) {
     Scaffold(
         topBar = {
             DefaultTopAppBar("Инофрмация")
         },
         bottomBar = {
-            DefaultBottomAppBar()
+            DefaultBottomAppBar(navController)
         }
     ) {
         Column(

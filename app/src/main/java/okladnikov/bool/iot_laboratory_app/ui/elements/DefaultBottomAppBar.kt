@@ -12,29 +12,36 @@ import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavController
 
 @Composable
-fun DefaultBottomAppBar() {
+fun DefaultBottomAppBar(navController: NavController) {
     BottomAppBar() {
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
-            IconButton(onClick = { /*TODO*/ }) {
+            IconButton(onClick = {
+                navController.navigate("start")
+            }) {
                 Icon(
                     imageVector = Icons.Filled.Info,
                     contentDescription = "About App"
                 )
             }
 
-            IconButton(onClick = { /*TODO*/ }) {
+            IconButton(onClick = {
+                navController.navigate("houseManage")
+            }) {
                 Icon(
                     imageVector = Icons.Filled.Home,
-                    contentDescription = "Home management"
+                    contentDescription = "Hose management"
                 )
             }
 
-            IconButton(onClick = { /*TODO*/ }) {
+            IconButton(onClick = {
+                navController.navigate("logReg")
+            }) {
                 Icon(
                     imageVector = Icons.Filled.Face,
                     contentDescription = "Account management"

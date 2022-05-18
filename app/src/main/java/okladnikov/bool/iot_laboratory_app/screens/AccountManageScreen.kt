@@ -14,17 +14,17 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import okladnikov.bool.iot_laboratory_app.ui.elements.*
 
-@Preview
 @Composable
-fun AccountManageScreen() {
+fun AccountManageScreen(navController: NavController) {
     Scaffold(
         topBar = {
             DefaultTopAppBar("Управление аккаунтом")
         },
         bottomBar = {
-            DefaultBottomAppBar()
+            DefaultBottomAppBar(navController)
         }
     ) {
         Column(

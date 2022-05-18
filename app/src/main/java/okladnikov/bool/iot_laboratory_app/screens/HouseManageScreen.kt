@@ -18,18 +18,19 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.material.Icon
+import androidx.compose.material.icons.filled.Face
+import androidx.navigation.NavController
 
 import okladnikov.bool.iot_laboratory_app.ui.elements.*
 
-@Preview
 @Composable
-fun HouseManageScreen() {
+fun HouseManageScreen(navController: NavController) {
     Scaffold(
         topBar = {
             DefaultTopAppBar("Доступные помещения")
         },
         bottomBar = {
-            DefaultBottomAppBar()
+            DefaultBottomAppBar(navController)
         }
     ) {
         Column(
@@ -45,12 +46,27 @@ fun HouseManageScreen() {
         ) {
             Box( modifier = Modifier.fillMaxWidth() ) {
                 CardWithTitle(title = "Привязать") {
-                    Icon(
-                        imageVector = Icons.Filled.Add,
-                        contentDescription = "Add house to manage"
-                    )
+                    IconButton(onClick = {
+                        navController.navigate("houseAdd")
+                    }) {
+                        Icon(
+                            imageVector = Icons.Filled.Add,
+                            contentDescription = "Add house to manage"
+                        )
+                    }
                 }
             }
+
+            Box( modifier = Modifier.fillMaxWidth() ) {
+                DefaultButton(
+                    onClick = {
+                        navController.navigate("houseControl")
+                    },
+                    text = "На экран управления"
+                )
+            }
+
+
         }
     }
 }
