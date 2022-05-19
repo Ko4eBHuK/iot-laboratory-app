@@ -1,55 +1,92 @@
 package okladnikov.bool.iot_laboratory_app.screens
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.runtime.Composable
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Lock
+import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.semantics.SemanticsProperties.ContentDescription
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.compose.material.Icon
 import androidx.navigation.NavController
-
-import okladnikov.bool.iot_laboratory_app.ui.elements.*
+import kotlinx.coroutines.launch
+import okladnikov.bool.iot_laboratory_app.model.DeviceModel
+import okladnikov.bool.iot_laboratory_app.model.HouseModel
+import okladnikov.bool.iot_laboratory_app.network.getHubs
+import okladnikov.bool.iot_laboratory_app.network.getUnits
+import okladnikov.bool.iot_laboratory_app.ui.elements.CardWithTitle
+import okladnikov.bool.iot_laboratory_app.ui.elements.DefaultBottomNavigationBar
+import okladnikov.bool.iot_laboratory_app.ui.elements.DefaultButton
+import okladnikov.bool.iot_laboratory_app.ui.elements.DefaultTopAppBar
+import okladnikov.bool.iot_laboratory_app.ui.theme.Blue
 
 @Composable
-fun HouseControlScreen(navController: NavController) {
+fun HouseControlScreen(
+    cookieString: String
+) {
     Scaffold(
         topBar = {
             DefaultTopAppBar("Управление помещением")
-        },
-        bottomBar = {
-            DefaultBottomAppBar(navController)
         }
     ) {
-        Column(
-            verticalArrangement = Arrangement.Center,
+        val coroutineScope = rememberCoroutineScope()
+        var loadingElementVisibility by remember { mutableStateOf(true) }
+        var devices: List<DeviceModel>? by remember { mutableStateOf(null) }
+
+        coroutineScope.launch {
+            devices = getUnits(cookieString)
+            loadingElementVisibility = false
+        }
+
+        LazyColumn(
             modifier = Modifier
-                .padding(30.dp)
-                .background(
-                    color = MaterialTheme.colors.surface,
-                    shape = MaterialTheme.shapes.small
-                )
-                .width(IntrinsicSize.Max),
-            horizontalAlignment = Alignment.CenterHorizontally
+                .fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(10.dp),
         ) {
-            Box( modifier = Modifier.fillMaxWidth() ) {
-                CardWithTitle(title = "Устройство лампочка") {
-                    Icon(
-                        imageVector = Icons.Filled.Add,
-                        contentDescription = "Включить"
-                    )
+            item {
+                Box{}
+            }
+
+            if(loadingElementVisibility){
+                item {
+                    CircularProgressIndicator(color = Blue)
                 }
+            } else {
+                if(devices != null) {
+                    items(devices!!) { device ->
+                        CardWithTitle(title = "Помещение ${device.name}") {
+                            Column() {
+                                Text(
+                                    text = "Последнее значение: ${device.lastValue}",
+                                    color = MaterialTheme.colors.onPrimary
+                                )
+                                Text(
+                                    text = "Последнее время доступа: ${device.lastTime}",
+                                    color = MaterialTheme.colors.onPrimary
+                                )
+                                Text(
+                                    text = "Возможные значения: ${device.possValues}",
+                                    color = MaterialTheme.colors.onPrimary
+                                )
+                                Text(
+                                    text = "Изображение: ${device.iconUrl}",
+                                    color = MaterialTheme.colors.onPrimary
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+
+            item {
+                Box(
+                    modifier = Modifier.padding(bottom = 60.dp)
+                )
             }
         }
     }

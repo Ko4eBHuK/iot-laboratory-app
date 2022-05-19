@@ -13,11 +13,12 @@ import okladnikov.bool.iot_laboratory_app.ui.theme.*
 @Composable
 fun DefaultButton(
     onClick: () -> Unit,
-    text: String
+    text: String,
+    modifier: Modifier = Modifier
 ) {
     Button(
         onClick = onClick,
-        modifier = Modifier.padding(30.dp),
+        modifier = modifier,
         colors = ButtonDefaults.buttonColors(backgroundColor = Blue, contentColor = LightBlue)
     ) {
         Text(text)

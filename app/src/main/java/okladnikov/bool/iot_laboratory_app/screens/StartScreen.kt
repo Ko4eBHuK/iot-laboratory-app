@@ -1,34 +1,35 @@
 package okladnikov.bool.iot_laboratory_app.screens
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.absolutePadding
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.*
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Scaffold
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import okladnikov.bool.iot_laboratory_app.R
-import okladnikov.bool.iot_laboratory_app.ui.elements.DefaultBottomAppBar
 import okladnikov.bool.iot_laboratory_app.ui.elements.CardWithTitle
+import okladnikov.bool.iot_laboratory_app.ui.elements.DefaultBottomNavigationBar
 import okladnikov.bool.iot_laboratory_app.ui.elements.DefaultTopAppBar
 import okladnikov.bool.iot_laboratory_app.ui.elements.TitleText
 
 @Composable
-fun StartScreen(navController: NavController) {
+fun StartScreen() {
     Scaffold(
         topBar = {
             DefaultTopAppBar("Инофрмация")
-        },
-        bottomBar = {
-            DefaultBottomAppBar(navController)
         }
     ) {
         Column(
-            verticalArrangement = Arrangement.Top,
+            verticalArrangement = Arrangement.SpaceEvenly,
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
                 .fillMaxSize()

@@ -14,7 +14,6 @@ import androidx.compose.ui.unit.sp
 fun TitleText(text: String) {
     Text(
         text = text,
-        modifier = Modifier.padding(30.dp),
         color = MaterialTheme.colors.primary,
         fontSize = 20.sp,
         fontWeight = FontWeight.Bold,

@@ -1,79 +1,75 @@
 package okladnikov.bool.iot_laboratory_app.screens
 
-import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.*
+import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import okladnikov.bool.iot_laboratory_app.ui.elements.*
+import okladnikov.bool.iot_laboratory_app.ui.elements.DefaultBottomNavigationBar
+import okladnikov.bool.iot_laboratory_app.ui.elements.DefaultButton
+import okladnikov.bool.iot_laboratory_app.ui.elements.DefaultTextField
+import okladnikov.bool.iot_laboratory_app.ui.elements.DefaultTopAppBar
 
 @Composable
-fun AccountManageScreen(navController: NavController) {
+fun AccountManageScreen(
+    navController: NavController
+) {
     Scaffold(
         topBar = {
             DefaultTopAppBar("Управление аккаунтом")
-        },
-        bottomBar = {
-            DefaultBottomAppBar(navController)
         }
     ) {
+        val localFocusManager = LocalFocusManager.current
+
         Column(
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
                 .fillMaxSize()
-                .absolutePadding(10.dp, 10.dp, 10.dp, 10.dp)
                 .verticalScroll(rememberScrollState())
+                .pointerInput(Unit) { detectTapGestures(
+                    onTap = { localFocusManager.clearFocus() }
+                )},
         ) {
+
+            Box{}
+
             DefaultTextField(
                 label = "Новый пароль",
-                modifier = Modifier.padding(30.dp),
                 visualTransformation = PasswordVisualTransformation()
             )
 
             DefaultTextField(
                 label = "Повторите новый пароль",
-                modifier = Modifier.padding(30.dp),
                 visualTransformation = PasswordVisualTransformation()
             )
 
-            Column(
-                verticalArrangement = Arrangement.SpaceAround,
-                modifier = Modifier
-                    .padding(30.dp)
-                    .background(
-                        color = MaterialTheme.colors.surface,
-                        shape = MaterialTheme.shapes.small
-                    )
-                    .width(IntrinsicSize.Max),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Box( modifier = Modifier.fillMaxWidth() ) {
-                    DefaultButton(
-                        onClick = {
-                            /*TODO*/
-                        },
-                        text = "Сменить пароль"
-                    )
-                }
+            DefaultButton(
+                onClick = {
+                    localFocusManager.clearFocus()
+                },
+                text = "Сменить пароль"
+            )
 
-                Box( modifier = Modifier.fillMaxWidth() ) {
-                    DefaultButton(
-                        onClick = {
-                            /*TODO*/
-                        },
-                        text = "Выйти"
-                    )
-                }
-            }
+            DefaultButton(
+                onClick = {
+                    localFocusManager.clearFocus()
+
+                    // TODO logout
+
+                    navController.navigate("logOut")
+                },
+                text = "Выйти",
+                modifier = Modifier.padding(top = 8.dp, bottom = 60.dp)
+            )
         }
     }
 }

@@ -19,7 +19,6 @@ fun CardWithTitle(
 ) {
     Column(
         modifier = Modifier
-            .padding(30.dp)
             .background(
                 color = MaterialTheme.colors.surface,
                 shape = MaterialTheme.shapes.small
@@ -49,6 +48,7 @@ fun CardWithTitle(
         Box(
             modifier = Modifier.padding(15.dp)
                 .fillMaxWidth()
+                .align(alignment = Alignment.CenterHorizontally)
         ) {
             content()
         }

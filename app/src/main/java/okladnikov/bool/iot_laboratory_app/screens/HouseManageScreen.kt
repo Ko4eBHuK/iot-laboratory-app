@@ -1,72 +1,111 @@
 package okladnikov.bool.iot_laboratory_app.screens
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.runtime.Composable
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.semantics.SemanticsProperties.ContentDescription
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.compose.material.Icon
-import androidx.compose.material.icons.filled.Face
 import androidx.navigation.NavController
-
-import okladnikov.bool.iot_laboratory_app.ui.elements.*
+import kotlinx.coroutines.launch
+import okladnikov.bool.iot_laboratory_app.model.HouseModel
+import okladnikov.bool.iot_laboratory_app.network.getHubs
+import okladnikov.bool.iot_laboratory_app.ui.elements.CardWithTitle
+import okladnikov.bool.iot_laboratory_app.ui.elements.DefaultButton
+import okladnikov.bool.iot_laboratory_app.ui.elements.DefaultTopAppBar
+import okladnikov.bool.iot_laboratory_app.ui.theme.Blue
+import androidx.compose.foundation.lazy.items
 
 @Composable
-fun HouseManageScreen(navController: NavController) {
+fun HouseManageScreen(
+    navController: NavController,
+    cookieString: String
+) {
     Scaffold(
         topBar = {
             DefaultTopAppBar("Доступные помещения")
-        },
-        bottomBar = {
-            DefaultBottomAppBar(navController)
         }
     ) {
-        Column(
-            verticalArrangement = Arrangement.Center,
+        val coroutineScope = rememberCoroutineScope()
+        var loadingElementVisibility by remember { mutableStateOf(true) }
+        var houses: List<HouseModel>? by remember { mutableStateOf(null) }
+
+        coroutineScope.launch {
+            houses = getHubs(cookieString)
+            loadingElementVisibility = false
+        }
+
+        LazyColumn(
             modifier = Modifier
-                .padding(30.dp)
-                .background(
-                    color = MaterialTheme.colors.surface,
-                    shape = MaterialTheme.shapes.small
-                )
-                .width(IntrinsicSize.Max),
-            horizontalAlignment = Alignment.CenterHorizontally
+                .fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(10.dp),
         ) {
-            Box( modifier = Modifier.fillMaxWidth() ) {
-                CardWithTitle(title = "Привязать") {
-                    IconButton(onClick = {
-                        navController.navigate("houseAdd")
-                    }) {
-                        Icon(
-                            imageVector = Icons.Filled.Add,
-                            contentDescription = "Add house to manage"
-                        )
+            item {
+                Box{}
+            }
+
+            if(loadingElementVisibility){
+                item {
+                    CircularProgressIndicator(color = Blue)
+                }
+            } else {
+                if(houses != null) {
+                    items(houses!!) { house ->
+                        CardWithTitle(title = "Помещение ${house.name}") {
+                            Column() {
+                                Text(
+                                    text = if(house.isOnline) "Работает" else "Не работает",
+                                    color = MaterialTheme.colors.onPrimary
+                                )
+                                Text(
+                                    text = "ID: ${house.id}",
+                                    color = MaterialTheme.colors.onPrimary
+                                )
+                                Row(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    horizontalArrangement = Arrangement.SpaceEvenly
+                                ) {
+                                    IconButton(onClick = {
+                                        navController.navigate("houseControl/${house.id}")
+                                    }) {
+                                        Icon(
+                                            imageVector = Icons.Filled.PlayArrow,
+                                            contentDescription = "Control house",
+                                            tint = MaterialTheme.colors.onPrimary
+                                        )
+                                    }
+
+                                    IconButton(onClick = {
+
+                                    }) {
+                                        Icon(
+                                            imageVector = Icons.Filled.Delete,
+                                            contentDescription = "Delete house",
+                                            tint = MaterialTheme.colors.onPrimary
+                                        )
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }
 
-            Box( modifier = Modifier.fillMaxWidth() ) {
+            item {
                 DefaultButton(
                     onClick = {
-                        navController.navigate("houseControl")
+                        navController.navigate("houseAdd")
                     },
-                    text = "На экран управления"
+                    text = "Привязать помещение",
+                    modifier = Modifier.padding(bottom = 60.dp)
                 )
             }
-
-
         }
     }
 }
+
