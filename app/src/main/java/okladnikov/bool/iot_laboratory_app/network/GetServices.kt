@@ -2,6 +2,7 @@ package okladnikov.bool.iot_laboratory_app.network
 
 import io.ktor.client.*
 import io.ktor.client.call.*
+import io.ktor.client.plugins.cookies.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import okladnikov.bool.iot_laboratory_app.model.DeviceModel
@@ -34,6 +35,8 @@ suspend fun getHubs(userCookies: String): List<HouseModel> {
         )
     }
 
+    client.close()
+
     val jsonObject = JSONTokener(response.body()).nextValue() as JSONObject
     val jsonResponse = jsonObject.getJSONObject("responce")
     val jsonArray = jsonResponse.getJSONArray("data")
@@ -49,24 +52,16 @@ suspend fun getHubs(userCookies: String): List<HouseModel> {
     return houseModelList
 }
 
-// TODO - make it works
 suspend fun getUnits(userCookies: String): List<DeviceModel> {
     val client = HttpClient() {
+        install(HttpCookies)
     }
-
-    println("cookies: $userCookies")
-    println("-------------------------")
 
     val userCookieValue = userCookies.substringBefore("%3D%3D") + "%3D%3D"
     val hubIDCookie = userCookies.substringAfter("%2D%2D")
     val privateCookieValue = userCookies.substringAfter("%3D%3D").substringBefore("%2D%2D")
 
-    println("user cookie: $userCookieValue")
-    println("hub cookie: $hubIDCookie")
-    println("private cookie: $privateCookieValue")
-    println("-------------------------")
-
-    val response: HttpResponse = client.get(BASE_URL+"portal/api/units.get.all.php") {
+    client.get(BASE_URL+"portal/api/hubs.get.bounded.php") {
         cookie(
             name = "Private",
             value = privateCookieValue,
@@ -79,19 +74,58 @@ suspend fun getUnits(userCookies: String): List<DeviceModel> {
             domain = "r-ho.in",
             path = "/"
         )
+    }
+    client.get(BASE_URL+"portal/api/hubs.bound.select.php?id=${hubIDCookie}") {
         cookie(
-            name = "hubID",
-            value = hubIDCookie,
+            name = "Private",
+            value = privateCookieValue,
+            domain = "r-ho.in",
+            path = "/"
+        )
+        cookie(
+            name = "user",
+            value = userCookieValue,
+            domain = "r-ho.in",
+            path = "/"
+        )
+    }
+    client.get(BASE_URL+"portal/api/hubs.get.bounded.php") {
+        cookie(
+            name = "Private",
+            value = privateCookieValue,
+            domain = "r-ho.in",
+            path = "/"
+        )
+        cookie(
+            name = "user",
+            value = userCookieValue,
             domain = "r-ho.in",
             path = "/"
         )
     }
 
+    var response: HttpResponse = client.get(BASE_URL+"portal/api/units.get.all.php") {
+        cookie(
+            name = "Private",
+            value = privateCookieValue,
+            domain = "r-ho.in",
+            path = "/"
+        )
+        cookie(
+            name = "user",
+            value = userCookieValue,
+            domain = "r-ho.in",
+            path = "/"
+        )
+    }
+
+    client.close()
+
+    var deviceModelList: List<DeviceModel> = emptyList()
     val jsonObject = JSONTokener(response.body()).nextValue() as JSONObject
     val jsonResponse = jsonObject.getJSONObject("responce")
     val jsonData = jsonResponse.getJSONObject("data")
     val jsonArrayUnits = jsonData.getJSONArray("units")
-    var deviceModelList: List<DeviceModel> = emptyList()
 
     for (i in 0 until jsonArrayUnits.length()) {
         val name = jsonArrayUnits.getJSONObject(i).getString("name")

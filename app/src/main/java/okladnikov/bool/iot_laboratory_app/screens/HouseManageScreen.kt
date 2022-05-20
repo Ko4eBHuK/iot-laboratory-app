@@ -30,13 +30,19 @@ fun HouseManageScreen(
             DefaultTopAppBar("Доступные помещения")
         }
     ) {
+        //TODO - fix crush of app when return to HouseManageScreen after it asked once before
+
         val coroutineScope = rememberCoroutineScope()
         var loadingElementVisibility by remember { mutableStateOf(true) }
         var houses: List<HouseModel>? by remember { mutableStateOf(null) }
+        var calledOnce: Boolean by remember { mutableStateOf(false) }
 
-        coroutineScope.launch {
-            houses = getHubs(cookieString)
-            loadingElementVisibility = false
+        if(!calledOnce){
+            calledOnce = true
+            coroutineScope.launch {
+                houses = getHubs(cookieString)
+                loadingElementVisibility = false
+            }
         }
 
         LazyColumn(

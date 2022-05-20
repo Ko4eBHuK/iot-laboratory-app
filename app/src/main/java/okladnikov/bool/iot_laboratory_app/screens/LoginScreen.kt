@@ -107,8 +107,8 @@ fun LoginScreen(
                         localFocusManager.clearFocus()
 
                         //TODO change below lines
-
-                        val cookieString = login(login.text, password.text)
+                        val cookieString = login("Ko4eBHuK", "Sharks_05Fankintronic")
+                        //val cookieString = login(login.text, password.text)
 
                         if ("%3D%3D" in cookieString) {
                             changeCookie(cookieString)

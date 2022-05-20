@@ -36,10 +36,14 @@ fun HouseControlScreen(
         val coroutineScope = rememberCoroutineScope()
         var loadingElementVisibility by remember { mutableStateOf(true) }
         var devices: List<DeviceModel>? by remember { mutableStateOf(null) }
+        var calledOnce: Boolean by remember { mutableStateOf(false) }
 
-        coroutineScope.launch {
-            devices = getUnits(cookieString)
-            loadingElementVisibility = false
+        if(!calledOnce){
+            calledOnce = true
+            coroutineScope.launch {
+                devices = getUnits(cookieString)
+                loadingElementVisibility = false
+            }
         }
 
         LazyColumn(
@@ -59,24 +63,24 @@ fun HouseControlScreen(
             } else {
                 if(devices != null) {
                     items(devices!!) { device ->
-                        CardWithTitle(title = "Помещение ${device.name}") {
-                            Column() {
-                                Text(
-                                    text = "Последнее значение: ${device.lastValue}",
-                                    color = MaterialTheme.colors.onPrimary
-                                )
-                                Text(
-                                    text = "Последнее время доступа: ${device.lastTime}",
-                                    color = MaterialTheme.colors.onPrimary
-                                )
-                                Text(
-                                    text = "Возможные значения: ${device.possValues}",
-                                    color = MaterialTheme.colors.onPrimary
-                                )
-                                Text(
-                                    text = "Изображение: ${device.iconUrl}",
-                                    color = MaterialTheme.colors.onPrimary
-                                )
+                        Box(
+                            modifier = Modifier.padding(10.dp)
+                        ) {
+                            CardWithTitle(title = "Устройство: ${device.name}") {
+                                Column() {
+                                    Text(
+                                        text = "Последнее значение: ${device.lastValue}",
+                                        color = MaterialTheme.colors.onPrimary
+                                    )
+                                    Text(
+                                        text = "Последнее время доступа: ${device.lastTime}",
+                                        color = MaterialTheme.colors.onPrimary
+                                    )
+                                    Text(
+                                        text = "Возможные значения: ${device.possValues}",
+                                        color = MaterialTheme.colors.onPrimary
+                                    )
+                                }
                             }
                         }
                     }

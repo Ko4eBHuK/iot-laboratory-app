@@ -27,5 +27,7 @@ suspend fun login(login: String, password: String) : String {
         cookie -> cookieString += cookie.value
     }
 
+    client.close()
+
     return cookieString
 }
