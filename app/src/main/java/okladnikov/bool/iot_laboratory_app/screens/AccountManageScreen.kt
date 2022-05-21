@@ -55,6 +55,7 @@ fun AccountManageScreen(
             DefaultButton(
                 onClick = {
                     localFocusManager.clearFocus()
+                    //TODO - implement password changing
                 },
                 text = "Сменить пароль"
             )
@@ -62,9 +63,6 @@ fun AccountManageScreen(
             DefaultButton(
                 onClick = {
                     localFocusManager.clearFocus()
-
-                    // TODO logout
-
                     navController.navigate("logOut")
                 },
                 text = "Выйти",

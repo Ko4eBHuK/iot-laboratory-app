@@ -14,7 +14,7 @@ private const val BASE_URL = "https://r-ho.in/"
 
 suspend fun getHubs(userCookies: String): List<HouseModel> {
 
-    val client = HttpClient() {
+    val client = HttpClient {
     }
 
     val privateCookieValue = userCookies.substringAfter("%3D%3D")
@@ -53,7 +53,7 @@ suspend fun getHubs(userCookies: String): List<HouseModel> {
 }
 
 suspend fun getUnits(userCookies: String): List<DeviceModel> {
-    val client = HttpClient() {
+    val client = HttpClient {
         install(HttpCookies)
     }
 
@@ -104,7 +104,7 @@ suspend fun getUnits(userCookies: String): List<DeviceModel> {
         )
     }
 
-    var response: HttpResponse = client.get(BASE_URL+"portal/api/units.get.all.php") {
+    val response: HttpResponse = client.get(BASE_URL+"portal/api/units.get.all.php") {
         cookie(
             name = "Private",
             value = privateCookieValue,
@@ -130,17 +130,87 @@ suspend fun getUnits(userCookies: String): List<DeviceModel> {
     for (i in 0 until jsonArrayUnits.length()) {
         val name = jsonArrayUnits.getJSONObject(i).getString("name")
         val lastValue = jsonArrayUnits.getJSONObject(i).getString("lastValue")
-        val lastTime = jsonArrayUnits.getJSONObject(i).getString("lastTime")
         val possValues = jsonArrayUnits.getJSONObject(i).getString("possValues")
         val iconUrl = jsonArrayUnits.getJSONObject(i).getString("icon")
+        val id = jsonArrayUnits.getJSONObject(i).getString("id")
         deviceModelList = deviceModelList + DeviceModel(
             name = name,
             lastValue = lastValue,
-            lastTime = lastTime,
             possValues = possValues,
-            iconUrl = iconUrl
+            iconUrl = "https:" + iconUrl.replace("\\", ""),
+            id = id
         )
     }
 
     return deviceModelList
+}
+
+suspend fun setDeviceState(userCookies: String, deviceID: String, valueToSet: String) {
+    val client = HttpClient {
+        install(HttpCookies)
+    }
+
+    val userCookieValue = userCookies.substringBefore("%3D%3D") + "%3D%3D"
+    val hubIDCookie = userCookies.substringAfter("%2D%2D").substringBefore("%2D%2D")
+    val privateCookieValue = userCookies.substringAfter("%3D%3D").substringBefore("%2D%2D")
+
+    client.get(BASE_URL+"portal/api/hubs.get.bounded.php") {
+        cookie(
+            name = "Private",
+            value = privateCookieValue,
+            domain = "r-ho.in",
+            path = "/"
+        )
+        cookie(
+            name = "user",
+            value = userCookieValue,
+            domain = "r-ho.in",
+            path = "/"
+        )
+    }
+    client.get(BASE_URL+"portal/api/hubs.bound.select.php?id=${hubIDCookie}") {
+        cookie(
+            name = "Private",
+            value = privateCookieValue,
+            domain = "r-ho.in",
+            path = "/"
+        )
+        cookie(
+            name = "user",
+            value = userCookieValue,
+            domain = "r-ho.in",
+            path = "/"
+        )
+    }
+    client.get(BASE_URL+"portal/api/hubs.get.bounded.php") {
+        cookie(
+            name = "Private",
+            value = privateCookieValue,
+            domain = "r-ho.in",
+            path = "/"
+        )
+        cookie(
+            name = "user",
+            value = userCookieValue,
+            domain = "r-ho.in",
+            path = "/"
+        )
+    }
+
+    client.get(BASE_URL+"portal/api/units.set.value.php?id=${deviceID}&value=${valueToSet}") {
+        cookie(
+            name = "Private",
+            value = privateCookieValue,
+            domain = "r-ho.in",
+            path = "/"
+        )
+        cookie(
+            name = "user",
+            value = userCookieValue,
+            domain = "r-ho.in",
+            path = "/"
+        )
+    }
+
+    client.close()
 }

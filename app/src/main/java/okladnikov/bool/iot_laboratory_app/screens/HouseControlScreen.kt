@@ -1,26 +1,25 @@
 package okladnikov.bool.iot_laboratory_app.screens
 
+import android.annotation.SuppressLint
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.Lock
-import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Scaffold
+import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
+import coil.compose.AsyncImage
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import okladnikov.bool.iot_laboratory_app.model.DeviceModel
-import okladnikov.bool.iot_laboratory_app.model.HouseModel
-import okladnikov.bool.iot_laboratory_app.network.getHubs
 import okladnikov.bool.iot_laboratory_app.network.getUnits
+import okladnikov.bool.iot_laboratory_app.network.setDeviceState
 import okladnikov.bool.iot_laboratory_app.ui.elements.CardWithTitle
-import okladnikov.bool.iot_laboratory_app.ui.elements.DefaultBottomNavigationBar
-import okladnikov.bool.iot_laboratory_app.ui.elements.DefaultButton
 import okladnikov.bool.iot_laboratory_app.ui.elements.DefaultTopAppBar
 import okladnikov.bool.iot_laboratory_app.ui.theme.Blue
 
@@ -67,20 +66,50 @@ fun HouseControlScreen(
                             modifier = Modifier.padding(10.dp)
                         ) {
                             CardWithTitle(title = "Устройство: ${device.name}") {
-                                Column() {
-                                    Text(
-                                        text = "Последнее значение: ${device.lastValue}",
-                                        color = MaterialTheme.colors.onPrimary
-                                    )
-                                    Text(
-                                        text = "Последнее время доступа: ${device.lastTime}",
-                                        color = MaterialTheme.colors.onPrimary
-                                    )
-                                    Text(
-                                        text = "Возможные значения: ${device.possValues}",
-                                        color = MaterialTheme.colors.onPrimary
-                                    )
+                                Row {
+                                    AsyncImage(
+                                        model = device.iconUrl,
+                                        contentDescription = "Icon",
+                                        modifier = Modifier.size(64.dp))
+                                    Column(
+                                        modifier = Modifier.padding(8.dp),
+                                        verticalArrangement = Arrangement.SpaceBetween
+                                    ) {
+                                        Text(
+                                            text = "Состояние: ${if(device.lastValue == "0") "Выключено" else "Включено"}",
+                                            color = MaterialTheme.colors.onPrimary
+                                        )
+                                        if(
+                                            device.possValues.length -
+                                            device.possValues.replace(",", "").length
+                                            == 1) {
+                                            Text(
+                                                text = "-Переключить-",
+                                                color = MaterialTheme.colors.onPrimary,
+                                                modifier = Modifier.clickable {
+                                                    if(device.lastValue ==
+                                                        device.possValues.substringBefore(",")) {
+                                                        device.lastValue =
+                                                            device.possValues.substringAfter(",")
+                                                    } else {
+                                                        device.lastValue =
+                                                            device.possValues.substringBefore(",")
+                                                    }
+
+                                                    runBlocking { setDeviceState(cookieString, device.id, device.lastValue) }
+                                                }
+                                            )
+                                        } else {
+                                            Text(
+                                                text = "Возможные значения: ${device.possValues}",
+                                                color = MaterialTheme.colors.onPrimary
+                                            )
+                                        }
+
+                                        //TODO - implement control processes for devices with custom possValues
+                                    }
                                 }
+
                             }
                         }
                     }

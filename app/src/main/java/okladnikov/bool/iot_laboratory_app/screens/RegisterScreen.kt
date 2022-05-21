@@ -68,9 +68,8 @@ fun RegisterScreen(
                 onClick = {
                     localFocusManager.clearFocus()
 
-                    // TODO logging
-
-                    navController.navigate("houseManage/ggg")
+                    // TODO - implement registration
+                    //navController.navigate("houseManage")
                 },
                 text = "Зарегестрироваться",
                 modifier = Modifier.padding(bottom = 60.dp)

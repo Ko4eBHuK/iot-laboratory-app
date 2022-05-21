@@ -55,7 +55,8 @@ fun HouseAddScreen(navController: NavController) {
             DefaultButton(
                 onClick = {
                     localFocusManager.clearFocus()
-                    navController.navigate("houseControl")
+                    //TODO - implement house adding
+                    //navController.navigate("houseControl")
                 },
                 text = "Добавить",
                 modifier = Modifier.padding(bottom = 60.dp)

@@ -36,6 +36,10 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun IotControlApp() {
     IotlaboratoryappTheme{
+        // TODO - make architecture of app nice, not that
+        // TODO - topics: navigation, viewModel, Hilt, use data package for it
+        // TODO - adapt app for using in local network (WiFi)
+
         val navController = rememberNavController()
         var userCookie by rememberSaveable { mutableStateOf("") }
         var isUserLogged by rememberSaveable { mutableStateOf(false) }
@@ -52,12 +56,11 @@ fun IotControlApp() {
                     startDestination = "info"
                 ) {
                     composable("info") { StartScreen() }
-
                     composable("logOut") {
                         isUserLogged = false
+                        userCookie = ""
                         StartScreen()
                     }
-
                     composable(
                         route = "logReg/{userLogged}",
                         arguments = listOf(
@@ -73,14 +76,11 @@ fun IotControlApp() {
                             else LoginOrRegScreen(navController)
                         } else LoginOrRegScreen(navController)
                     }
-
-                    composable("login") { LoginScreen(navController, userCookie) {
-                        userCookie = it
-                    }
+                    composable("login") {
+                        LoginScreen(navController) { userCookie = it }
                     }
                     composable("register") { RegisterScreen(navController) }
                     composable("accountManage") { AccountManageScreen(navController) }
-
                     composable(
                         route = "houseManage/{userLogged}",
                         arguments = listOf(
@@ -92,11 +92,11 @@ fun IotControlApp() {
                         val userLogged = entry.arguments?.getBoolean("userLogged")
                         if (userLogged != null) {
                             isUserLogged = userLogged
+                            userCookie = userCookie.substringBefore("%2D%2D")
                             if(userLogged) HouseManageScreen(navController, userCookie)
                             else LoginOrRegScreen(navController)
                         } else LoginOrRegScreen(navController)
                     }
-
                     composable(
                         route = "houseControl/{hubID}",
                         arguments = listOf(
@@ -111,7 +111,6 @@ fun IotControlApp() {
                             HouseControlScreen(userCookie)
                         } else LoginOrRegScreen(navController)
                     }
-
                     composable("houseAdd") { HouseAddScreen(navController) }
                 }
             }

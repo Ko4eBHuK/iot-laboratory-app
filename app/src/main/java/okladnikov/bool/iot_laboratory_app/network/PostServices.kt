@@ -9,7 +9,7 @@ import io.ktor.http.*
 private const val BASE_URL = "https://r-ho.in/"
 
 suspend fun login(login: String, password: String) : String {
-    val client = HttpClient() {
+    val client = HttpClient {
         install(HttpCookies)
     }
 
