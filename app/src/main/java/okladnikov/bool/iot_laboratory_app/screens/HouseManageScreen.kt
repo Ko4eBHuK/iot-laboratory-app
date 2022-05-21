@@ -2,6 +2,7 @@ package okladnikov.bool.iot_laboratory_app.screens
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
@@ -18,7 +19,6 @@ import okladnikov.bool.iot_laboratory_app.ui.elements.CardWithTitle
 import okladnikov.bool.iot_laboratory_app.ui.elements.DefaultButton
 import okladnikov.bool.iot_laboratory_app.ui.elements.DefaultTopAppBar
 import okladnikov.bool.iot_laboratory_app.ui.theme.Blue
-import androidx.compose.foundation.lazy.items
 
 @Composable
 fun HouseManageScreen(

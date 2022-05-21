@@ -14,10 +14,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import okladnikov.bool.iot_laboratory_app.R
 import okladnikov.bool.iot_laboratory_app.ui.elements.CardWithTitle
-import okladnikov.bool.iot_laboratory_app.ui.elements.DefaultBottomNavigationBar
 import okladnikov.bool.iot_laboratory_app.ui.elements.DefaultTopAppBar
 import okladnikov.bool.iot_laboratory_app.ui.elements.TitleText
 

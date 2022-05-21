@@ -7,7 +7,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import okladnikov.bool.iot_laboratory_app.ui.elements.DefaultBottomNavigationBar
 import okladnikov.bool.iot_laboratory_app.ui.elements.DefaultButton
 import okladnikov.bool.iot_laboratory_app.ui.elements.DefaultTopAppBar
 
